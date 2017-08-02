@@ -1,0 +1,135 @@
+---
+title: "Energy Intensity"
+author: "Andrew Holguin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Energy Intensity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `energyintensity` R package provides classes and functions to support the
+development of network-based energy intensity models using utility
+meter and infrastructure data. It is currently available only on Github:
+
+```{r eval=FALSE}
+if (!require(energyintensity)) remotes::install_github("ucd-cwee/energyintensity")
+
+```
+
+The basic data required to build a spatially disaggregeted energy intensity
+model can be divided into two categories:
+
+1. asset water and energy meter readings  
+2. network connectivity model  
+
+With these two data sets, it is possible to model the cumulative energy required
+to serve different locations within the water utility distribution network.
+
+Other types of data can also be integrated, both to improve the robustness of
+the model and to enable additional analytical features. These include spatial
+pressure zones, customer consumption data, and modeled flow values (from a
+hydraulic model).
+
+
+### Asset Meter Data
+
+Asset water meter data is typically obtained either from a utility SCADA system,
+which measures flow rates at regular intervals, or from aggregated records
+provided by the water utility. Energy meter data is similarly obtained from the
+water utiilty SCADA system, or as is often the case, from energy utility billing
+records. The data for each meter is structured as a time series, however the
+measurment resolution (e.g., regular 15-minute interval vs. irregular billing
+cycles) and type (e.g., rate vs. volume) may vary between the series.
+Calculating energy intensity requires all of the water and energy meter data
+associated with an asset to be combined and reconciled.
+
+```{r}
+# load sample meter data (data frame)
+
+
+# plot (ggplot)
+
+
+```
+
+Cleaning and pre-processing of the data can be handled entirely by the analyst,
+however, there are a few approaches built in to the `energyintensity` package,
+which implement commonly used methods. These methods are used to standardize the
+different time series, so that they can be merged and aggregated. The available
+methods fall into two general categories: (1) aggregation, and (2) resampling.
+
+```{r}
+
+```
+
+
+
+
+
+
+- ei_data
+  - df with several specific fields
+
+- support point and interval measurements (and conversion)
+- time series vis & diagnostics
+- app to support review and validation
+
+
+### Network Connectivity Model
+
+- ei_net
+  - igraph with ei_data attached at nodes (and edges)
+
+- convert between spatial and igraph-based network
+- display (and edit?) connectivity
+
+
+### Data Integration
+
+- associate meter data with specific nodes or edges in the graph
+
+
+### Network Time Slices
+
+- snapshot of model during a point or interval of time
+- cumulative flow and related diagnostics
+
+
+### Model Execution
+
+- calc ei & flow
+
+
+### Spatial Visualization
+
+- plot as map
+- pressure zone data --> visualize ei throughout service territory
+
+
+### Customer Data & Conservation Estimates
+
+
+
+
+### Data Fusion & Model Tuning
+
+
+
+
+### Future Development Plans
+
+Split non-core components into other packages:
+  - random data generation for simulation and testing
+  - model development vis app
+  - additional extensions?
+
+- network skeletonization
+- integration with external hydraulic models
+- better representation of time lags and storage
+- additional and improved analytical tools
+- more tests, documentation, etc.
+
+
+

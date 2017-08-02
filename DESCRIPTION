@@ -10,3 +10,6 @@ Description: Model the cumulative embedded energy values within a water utility
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
