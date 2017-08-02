@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Energy Intensity}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 The `energyintensity` R package provides classes and functions to support the
@@ -15,6 +17,8 @@ meter and infrastructure data. It is currently available only on Github:
 
 ```{r eval=FALSE}
 if (!require(energyintensity)) remotes::install_github("ucd-cwee/energyintensity")
+
+library(energyintensity)
 
 ```
 
@@ -46,11 +50,19 @@ Calculating energy intensity requires all of the water and energy meter data
 associated with an asset to be combined and reconciled.
 
 ```{r}
-# load sample meter data (data frame)
+# load sample meter data
+data("pump_st_1")
 
+pump_st_1
 
-# plot (ggplot)
+# plot
+library("ggforce")
+library("ggstance")
 
+ggplot(pump_st_1, aes(xmin = int_start(interval),
+                      xmax = int_end(interval),
+                      y = energy)) +
+  geom_linerangeh()
 
 ```
 

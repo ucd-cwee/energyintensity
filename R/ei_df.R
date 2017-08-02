@@ -5,10 +5,6 @@ as.ei_df = function(x, ...) UseMethod("as.ei_df")
 
 #' @name as.ei_df
 #'
-#' @param interval names or numbers of the \code{interval} column
-#' @param energy names or numbers of the numeric columns holding energy data
-#' @param water names or numbers of the numeric columns holding water data
-#' @param ei name or number of the numeric columns holding ei data
 #' @param ... passed on to \link{ei_df}, might included \code{method}
 #'
 #' @examples
@@ -18,6 +14,29 @@ as.ei_df = function(x, ...) UseMethod("as.ei_df")
 #' as.ei_df(x)
 #' @export
 as.ei_df.data.frame <- function(x, ..., intervals, energy, water, ei) {
+
+  # call constructor
+  ei_df(...)
+}
+
+#' @name as.ei_df
+#' @export
+as.ei_df.ei_df <- function(x, ...) {
+  x
+}
+
+#' Create \code{ei_df} object
+#'
+#' Create \code{ei_df}, which extends data.frame-like objects with standardized energy intensity data series
+#' @name ei_df
+#' @param ... column elements to be binded into an \code{ei_df} object or a single \code{list} or \code{data.frame} with required columns.
+#' @param stringsAsFactors logical; logical: should character vectors be converted to factors?  The `factory-fresh' default is \code{TRUE}, but this can be changed by setting \code{options(stringsAsFactors = FALSE)}.
+#' @examples
+#' # ei_df()
+#' @export
+ei_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
+
+  x <- list(...)
 
   # try to guess the required columns
   if (missing(intervals)) {
@@ -50,31 +69,12 @@ as.ei_df.data.frame <- function(x, ..., intervals, energy, water, ei) {
   }
   water_data <- x[[water]]
 
-  # call constructor
-  ei_df(intervals = int_data,
-        energy = energy_data,
-        water = water_data,
-        ei = ei_df,
-        ...)
-}
+  df <- data.frame(intervals = int_data,
+                   energy = energy_data,
+                   water = water_data,
+                   ei = ei_df,
+                   stringsAsFactors = stringsAsFactors)
 
-#' @name as.ei_df
-#' @export
-as.ei_df.ei_df <- function(x, ...) x
-
-#' Create \code{ei_df} object
-#'
-#' Create \code{ei_df}, which extends data.frame-like objects with standardized energy intensity data series
-#' @name ei_df
-#' @param ... column elements to be binded into an \code{ei_df} object or a single \code{list} or \code{data.frame} with required columns.
-#' @param stringsAsFactors logical; logical: should character vectors be converted to factors?  The `factory-fresh' default is \code{TRUE}, but this can be changed by setting \code{options(stringsAsFactors = FALSE)}.
-#' @examples
-#' # ei_df()
-#' @export
-ei_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
-
-  x <- list(...)
-
-  structure(x,
+  structure(df,
             class = c("ei_data", class(x)))
 }
