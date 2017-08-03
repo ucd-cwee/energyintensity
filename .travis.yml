@@ -1,5 +1,5 @@
 language: r
 cache: packages
-sudo: false
+sudo: required
 apt_packages:
   - libudunits2-dev
