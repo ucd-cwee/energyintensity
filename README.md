@@ -1,6 +1,7 @@
 # energyintensity
 
 [![Build Status](https://travis-ci.org/ucd-cwee/energyintensity.svg?branch=master)](https://travis-ci.org/ucd-cwee/energyintensity)
+[![codecov](https://codecov.io/gh/ucd-cwee/energyintensity/branch/master/graph/badge.svg)](https://codecov.io/gh/ucd-cwee/energyintensity)
 
 The `energyintensity` R package is used to model the embedded energy within a
 water distribution system. This is done using system meter data and a simple
