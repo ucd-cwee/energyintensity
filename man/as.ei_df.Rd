@@ -18,14 +18,6 @@ as.ei_df(x, ...)
 \item{x}{object to be converted into an object class \code{ei_df}}
 
 \item{...}{passed on to \link{ei_df}, might included \code{method}}
-
-\item{energy}{names or numbers of the numeric columns holding energy data}
-
-\item{water}{names or numbers of the numeric columns holding water data}
-
-\item{ei}{name or number of the numeric columns holding ei data}
-
-\item{interval}{names or numbers of the \code{interval} column}
 }
 \description{
 Convert foreign object to an \code{ei_df} object

@@ -61,7 +61,7 @@ library("ggstance")
 
 ggplot(pst1_water, aes(xmin = int_start(interval),
                        xmax = int_end(interval),
-                       y = energy)) +
+                       y = water)) +
   geom_linerangeh()
 
 ```
