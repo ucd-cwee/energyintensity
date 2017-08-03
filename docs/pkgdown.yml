@@ -1,0 +1,6 @@
+urls:
+  reference: https://ucd-cwee.github.io/energyintensity//reference
+  article: https://ucd-cwee.github.io/energyintensity//articles
+articles:
+  intro: intro.html
+

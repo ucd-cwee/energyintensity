@@ -12,4 +12,4 @@ reference:
     - ei_df
   - title: Functions
     contents:
-    - reconcile_ts
+    - as.ei_df
