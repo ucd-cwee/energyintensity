@@ -10,7 +10,7 @@
 \usage{
 as.ei_df(x, ...)
 
-\method{as.ei_df}{data.frame}(x, ..., intervals, energy, water, ei)
+\method{as.ei_df}{data.frame}(x, ...)
 
 \method{as.ei_df}{ei_df}(x, ...)
 }
@@ -23,8 +23,8 @@ as.ei_df(x, ...)
 Convert foreign object to an \code{ei_df} object
 }
 \examples{
-library(units)
-x <- data.frame(water = set_units(1:10, mg),
-                energy = set_units(rnorm(10), kWh))
-as.ei_df(x)
+#library(units)
+#x <- data.frame(water = set_units(1:10, mg),
+#                energy = set_units(rnorm(10), kW * h))
+#as.ei_df(x)
 }
