@@ -1,3 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
+^C:\\Users\\AH\\Documents\\GitHub\\energyintensity\\docs$
+^_pkgdown\.yml$

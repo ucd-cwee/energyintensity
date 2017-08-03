@@ -1,0 +1,15 @@
+url: https://ucd-cwee.github.io/energyintensity/
+
+template:
+  params:
+    bootswatch: cerulean
+
+reference:
+  - title: Classes
+    desc:  Classes for meter and network data.
+    contents:
+    - meter_df
+    - ei_df
+  - title: Functions
+    contents:
+    - reconcile_ts

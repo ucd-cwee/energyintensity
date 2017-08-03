@@ -2,9 +2,8 @@ Package: energyintensity
 Type: Package
 Title: Network-based energy intensity modeling
 Version: 0.0.9000
-Author: person("Andrew", "Holguin", email = "ajholguin@ucdavis.edu",
+Authors@R: person("Andrew", "Holguin", email = "ajholguin@ucdavis.edu",
     role = c("aut", "cre"))
-Maintainer: Andrew Holguin <ajholguin@ucdavis.edu>
 Description: Model the cumulative embedded energy values within a water utility
     distribution system.
 License: MIT + file LICENSE

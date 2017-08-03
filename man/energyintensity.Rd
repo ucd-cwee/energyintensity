@@ -19,3 +19,7 @@ The ei classes ...
 The ei functions ...
 }
 
+\author{
+\strong{Maintainer}: Andrew Holguin \email{ajholguin@ucdavis.edu}
+
+}
