@@ -1,13 +1,22 @@
-
 # sample meter data from a pump station
 
-library(units)
-library(lubridate)
+library(energyintensity)
 
+set.seed(5)
+
+# date intervals
 st <- ymd("2015-01-01")
+int <- interval(seq(st, st + months(11), by = "+1 month"),
+                seq(st + months(1), st + months(12), by = "+1 month"))
 
-pump_st_1 <- meter_df(interval = interval(seq(st, st + months(11), by = "+1 month"),
-                                          seq(st + months(1), st + months(12), by = "+1 month")),
-                      energy = set_units(rnorm(12), kW*h))
+# energy series
+pst1_energy <- meter_df(interval = int,
+                        energy = set_units(rnorm(12), kW*h))
 
-devtools::use_data(pump_st_1)
+devtools::use_data(pst1_energy)
+
+# water series
+pst1_water <- meter_df(interval = int,
+                       water = set_units(rnorm(12), kW*h))
+
+devtools::use_data(pst1_water)
