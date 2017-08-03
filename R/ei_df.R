@@ -8,12 +8,12 @@ as.ei_df = function(x, ...) UseMethod("as.ei_df")
 #' @param ... passed on to \link{ei_df}, might included \code{method}
 #'
 #' @examples
-#' library(units)
-#' x <- data.frame(water = set_units(1:10, mg),
-#'                 energy = set_units(rnorm(10), kWh))
-#' as.ei_df(x)
+#' #library(units)
+#' #x <- data.frame(water = set_units(1:10, mg),
+#' #                energy = set_units(rnorm(10), kW * h))
+#' #as.ei_df(x)
 #' @export
-as.ei_df.data.frame <- function(x, ..., intervals, energy, water, ei) {
+as.ei_df.data.frame <- function(x, ...) {
 
   # call constructor
   ei_df(...)
@@ -39,34 +39,34 @@ ei_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
   x <- list(...)
 
   # try to guess the required columns
-  if (missing(intervals)) {
+  #if (missing(intervals)) {
     intervals <- vapply(x, function(x) inherits(x, "interval"), TRUE)
     if (!any(intervals)) stop("no interval column found")
     if (sum(intervals) > 1) {
       warning("multiple interval columns found, using first...")
       intervals <- which(intervals)[1]
     }
-  }
+  #}
   int_data <- x[[intervals]]
 
-  if (missing(energy)) {
+  #if (missing(energy)) {
     energy <- vapply(x, function(x) units(x) %in% getOption("ei.energy_units"), TRUE)
     if (!any(energy)) stop("no energy data found")
     if (sum(energy) > 1) {
       warning("multiple energy columns found, using first...")
       energy <- which(energy)[1]
     }
-  }
+  #}
   energy_data <- x[[energy]]
 
-  if (missing(water)) {
+  #if (missing(water)) {
     water <- vapply(x, function(x) units(x) %in% getOption("ei.water_units"), TRUE)
     if (!any(water)) stop("no water data found")
     if (sum(water) > 1) {
       warning("multiple water columns found, using first...")
       water <- which(water)[1]
     }
-  }
+  #}
   water_data <- x[[water]]
 
   df <- data.frame(intervals = int_data,

@@ -10,9 +10,13 @@ Description: Model the cumulative embedded energy values within a water utility
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 2.10)
 Suggests: knitr,
     rmarkdown,
-    testthat
+    testthat,
+    memoise,
+    ggstance,
+    ggforce
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Imports: units,

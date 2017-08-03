@@ -17,8 +17,10 @@ meter and infrastructure data. It is currently available only on Github:
 
 ```{r eval=FALSE}
 if (!require(energyintensity)) remotes::install_github("ucd-cwee/energyintensity")
+```
 
-library(energyintensity)
+```{r}
+library("energyintensity")
 
 ```
 
@@ -50,12 +52,11 @@ Calculating energy intensity requires all of the water and energy meter data
 associated with an asset to be combined and reconciled.
 
 ```{r}
-# load sample meter data
-data("pst1_water", "pst1_energy")
-
-pst1_water
+# sample meter data
+data(pst1_water)
 
 # plot
+library("lubridate")
 library("ggforce")
 library("ggstance")
 
@@ -71,12 +72,6 @@ however, there are a few approaches built in to the `energyintensity` package,
 which implement commonly used methods. These methods are used to standardize the
 different time series, so that they can be merged and aggregated. The available
 methods fall into two general categories: (1) aggregation, and (2) resampling.
-
-```{r}
-
-```
-
-
 
 
 
