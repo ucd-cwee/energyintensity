@@ -7,12 +7,10 @@
 }
 
 # define units
-mg <- units::make_unit("mg")
-af <- units::make_unit("af")
-units::install_conversion_constant(from = "mg", to = "af", const = 3.068883245971575)
-
-mgd <- units::make_unit("mgd")
+MG <- units::make_unit("MG")    # million gallons
+AF <- units::make_unit("AF")    # acre-feet
+units::install_conversion_constant(from = "MG", to = "AF", const = 3.068883245971575)
 
 # default units
-options(ei.water_units = c("mg", "af", "mgd"),
-        ei.energy_units = c("kwh"))
+options(ei.water_units = c("MG", "AF", "MG d-1"),
+        ei.energy_units = c("h kW"))
