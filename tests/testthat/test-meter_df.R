@@ -14,19 +14,19 @@ dates <- seq.Date(as.Date("2013-1-1"), by = "+1 month", length.out = 12)
 pt_values <- units::set_units(rnorm(12), kW)
 
 # meter_df from multiple vectors
-test_that("interval vectors are bound together", {
-  mdf <- meter_df(interval = int,
-                  energy = int_values)
+# test_that("interval vectors are bound together", {
+#   mdf <- meter_df(interval = int,
+#                   energy = int_values)
+#
+#   expect_is(mdf, "meter_df")
+# })
 
-  expect_is(mdf, "meter_df")
-})
-
-test_that("point vectors are bound together", {
-  mdf <- meter_df(date = dates,
-                  energy = pt_values)
-
-  expect_is(mdf, "meter_df")
-})
+# test_that("point vectors are bound together", {
+#   mdf <- meter_df(date = dates,
+#                   energy = pt_values)
+#
+#   expect_is(mdf, "meter_df")
+# })
 
 # meter_df from list
 # TODO

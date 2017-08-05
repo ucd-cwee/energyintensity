@@ -10,7 +10,7 @@
 #' x <- data.frame(time = seq.Date(as.Date("2013-1-1"), by = "+1 month", length.out = 12),
 #'                 value = set_units(rnorm(12), kW))
 #'
-#' meter_df(x)
+#' #meter_df(x)
 #' @export
 meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
 
