@@ -13,7 +13,7 @@ editor_options:
 
 The `energyintensity` R package provides classes and functions to support the
 development of network-based energy intensity models using utility
-meter and infrastructure data. It is currently available only on Github:
+meter and infrastructure data. It is currently only available on Github:
 
 ```{r eval=FALSE}
 if (!require(energyintensity)) remotes::install_github("ucd-cwee/energyintensity")
@@ -21,21 +21,21 @@ if (!require(energyintensity)) remotes::install_github("ucd-cwee/energyintensity
 
 ```{r}
 library("energyintensity")
-
 ```
 
 The basic data required to build a spatially disaggregeted energy intensity
-model can be divided into two categories:
+model can be divided into two main categories:
 
-1. asset water and energy meter readings  
+1. asset-level data (typically readings from water and energy meters)  
 2. network connectivity model  
 
-With these two data sets, it is possible to model the cumulative energy required
-to serve different locations within the water utility distribution network.
+With data of these two types, it is possible to model the cumulative energy
+required to serve different locations within the water utility distribution
+network.
 
 Other types of data can also be integrated, both to improve the robustness of
 the model and to enable additional analytical features. These include spatial
-pressure zones, customer consumption data, and modeled flow values (from a
+pressure zones, customer consumption data, and modeled flow values (e.g., from a
 hydraulic model).
 
 

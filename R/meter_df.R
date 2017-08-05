@@ -5,14 +5,13 @@
 #' @param ... column elements to be binded into an \code{meter_df} object or a single \code{list} or \code{data.frame} with required columns. One element must be a time index and at least one should have measured values with units set, see \code{set_units}
 #' @param stringsAsFactors logical; logical: should character vectors be converted to factors?  The `factory-fresh' default is \code{TRUE}, but this can be changed by setting \code{options(stringsAsFactors = FALSE)}.
 #' @examples
-#' library(units)
+#' library("units")
 #'
-#` x <- data.frame(time = seq.Date(as.Date("2013-1-1"), by = "+1 month", length.out = 12),
-#`                 value = set_units(rnorm(12), kW*h))
+#' x <- data.frame(time = seq.Date(as.Date("2013-1-1"), by = "+1 month", length.out = 12),
+#'                 value = set_units(rnorm(12), kW))
 #'
 #' meter_df(x)
 #' @export
-
 meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
 
   x <- list(...)
@@ -38,14 +37,14 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
   # TODO: convert with warning
   is_rate <- sapply(x[has_units], function(y) {
     denom <- units(y)$denominator
-    dt <- try(as.dt(denom), silent = TRUE)
+    dt <- try(units::as.dt(denom), silent = TRUE)
     denom_is_dur <- !inherits(dt, "try-error")
-    watts <- try(set_units(y, "W"), silent = TRUE)
+    watts <- try(units::set_units(y, "W"), silent = TRUE)
     is_watts <- !inherits(watts, "try-error")
     denom_is_dur | is_watts
   })
 
-  is_interval <- inherits(x[has_time], "Interval")
+  is_interval <- inherits(x[[which(has_time)]], "Interval")
   if (is_interval & any(is_rate)) stop("time is interval, but measurement is rate", call. = FALSE)
   if (!is_interval & !any(is_rate)) stop("time is point, but measurement is 'volume'", call. = FALSE)
 
