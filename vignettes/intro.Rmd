@@ -1,5 +1,6 @@
 ---
-title: "Energy Intensity"
+title: "Energy Intensity Data"
+subtitle: "Introduction"
 author: "Andrew Holguin"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -12,11 +13,11 @@ editor_options:
 ---
 
 The `energyintensity` R package provides classes and functions to support the
-development of network-based energy intensity models using utility
-meter and infrastructure data. It is currently only available on Github:
+development of network-based energy intensity models using utility meter and
+infrastructure data. It is currently only available on Github:
 
 ```{r eval=FALSE}
-if (!require(energyintensity)) remotes::install_github("ucd-cwee/energyintensity")
+remotes::install_github("ucd-cwee/energyintensity")
 ```
 
 ```{r}
@@ -39,104 +40,76 @@ pressure zones, customer consumption data, and modeled flow values (e.g., from a
 hydraulic model).
 
 
-### Asset Meter Data
+## Asset Meter Data
 
 Asset water meter data is typically obtained either from a utility SCADA system,
 which measures flow rates at regular intervals, or from aggregated records
 provided by the water utility. Energy meter data is similarly obtained from the
-water utiilty SCADA system, or as is often the case, from energy utility billing
+water utility SCADA system, or as is often the case, from energy utility billing
 records. The data for each meter is structured as a time series, however the
 measurment resolution (e.g., regular 15-minute interval vs. irregular billing
-cycles) and type (e.g., rate vs. volume) may vary between the series.
-Calculating energy intensity requires all of the water and energy meter data
-associated with an asset to be combined and reconciled.
+cycles) and type (e.g., rate vs. volume) may vary between the series. These
+issues and others, are discussed in greater detail in the vignette on [Model
+Development](model_development.html).
+
+The `energyintensity` package provides a `meter_df` class, which extends the
+base `data.frame` class with simple data validation, error checking, and
+visualization methods. All of the modeling functions will also take a normal
+`data.frame`, as long as it follows the same basic structure.
+
+### `meter_df` class
 
 ```{r}
 # sample meter data
 data(pst1_water)
 
-# plot
 library("lubridate")
-library("ggforce")
-library("ggstance")
+```
+
+
+
+### `ei_df` class
+
+- ei_data
+  - df with several specific fields
+
+
+
+
+### Using `ggplot2`
+
+If you prefer, `ggplot2` can be used for plotting, however it does not currently
+support `units`. You can either convert the values to numeric, or load the
+`ggforce` package, which will enable support for `units`.
+
+```{r message = FALSE, warning = FALSE}
+library("ggforce")   # support for 'units'
+library("ggstance")  # geom_linerangeh (horizontal line intervals)
 
 ggplot(pst1_water, aes(xmin = int_start(interval),
                        xmax = int_end(interval),
                        y = water)) +
   geom_linerangeh()
-
 ```
 
-Cleaning and pre-processing of the data can be handled entirely by the analyst,
-however, there are a few approaches built in to the `energyintensity` package,
-which implement commonly used methods. These methods are used to standardize the
-different time series, so that they can be merged and aggregated. The available
-methods fall into two general categories: (1) aggregation, and (2) resampling.
 
-
-
-
-- ei_data
-  - df with several specific fields
-
-- support point and interval measurements (and conversion)
-- time series vis & diagnostics
-- app to support review and validation
-
-
-### Network Connectivity Model
+## Network Connectivity Model
 
 - ei_net
   - igraph with ei_data attached at nodes (and edges)
-
 - convert between spatial and igraph-based network
-- display (and edit?) connectivity
 
 
-### Data Integration
+## Data Integration
 
 - associate meter data with specific nodes or edges in the graph
 
 
-### Network Time Slices
 
-- snapshot of model during a point or interval of time
-- cumulative flow and related diagnostics
-
-
-### Model Execution
-
-- calc ei & flow
-
-
-### Spatial Visualization
-
-- plot as map
-- pressure zone data --> visualize ei throughout service territory
-
-
-### Customer Data & Conservation Estimates
+## Customer Data
 
 
 
-
-### Data Fusion & Model Tuning
-
-
-
-
-### Future Development Plans
-
-Split non-core components into other packages:
-  - random data generation for simulation and testing
-  - model development vis app
-  - additional extensions?
-
-- network skeletonization
-- integration with external hydraulic models
-- better representation of time lags and storage
-- additional and improved analytical tools
-- more tests, documentation, etc.
 
 
 
