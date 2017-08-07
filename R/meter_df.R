@@ -15,7 +15,7 @@
 meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
 
   x <- list(...)
-  if (length(x) == 1L && (inherits(x[[1L]], "data.frame")))
+  if (length(x) == 1L && inherits(x[[1L]], "data.frame"))
     x = x[[1L]]
 
   # validate date/time

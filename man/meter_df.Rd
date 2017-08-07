@@ -7,7 +7,7 @@
 meter_df(..., stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
-\item{...}{column elements to be binded into an \code{meter_df} object or a single \code{list} or \code{data.frame} with required columns. One element must be a time index and at least one should have measured values with units set, see \code{set_units}}
+\item{...}{column elements to be binded into an \code{meter_df} object or a \code{data.frame} with required columns. One element must be a time index and at least one should have measured values with units set, see \code{set_units}}
 
 \item{stringsAsFactors}{logical; logical: should character vectors be converted to factors?  The `factory-fresh' default is \code{TRUE}, but this can be changed by setting \code{options(stringsAsFactors = FALSE)}.}
 }
