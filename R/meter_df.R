@@ -2,7 +2,7 @@
 #'
 #' Create \code{meter_df}, which is essentially a data.frame with standardized meter data series
 #' @name meter_df
-#' @param ... column elements to be binded into an \code{meter_df} object or a single \code{list} or \code{data.frame} with required columns. One element must be a time index and at least one should have measured values with units set, see \code{set_units}
+#' @param ... column elements to be binded into an \code{meter_df} object or a \code{data.frame} with required columns. One element must be a time index and at least one should have measured values with units set, see \code{set_units}
 #' @param stringsAsFactors logical; logical: should character vectors be converted to factors?  The `factory-fresh' default is \code{TRUE}, but this can be changed by setting \code{options(stringsAsFactors = FALSE)}.
 #' @examples
 #' library("units")
