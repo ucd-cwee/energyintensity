@@ -123,12 +123,3 @@ test_that("point timestamp with 'volume' measurment", {
 
   expect_error(f_pt_vol(), "time is point, but measurement is 'volume'")
 })
-
-# included sample data
-test_that("package sample data", {
-
-  data("pst1_water", "pst1_energy")
-
-  expect_is(pst1_water, "meter_df")
-  expect_is(pst1_energy, "meter_df")
-})
