@@ -57,3 +57,8 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
             time_field = names(x)[has_time],
             meas_fields = names(x)[has_units])
 }
+
+#' @export
+print.meter_df <- function(x, ...) {
+  NextMethod()
+}

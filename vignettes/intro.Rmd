@@ -52,29 +52,67 @@ cycles) and type (e.g., rate vs. volume) may vary between the series. These
 issues and others, are discussed in greater detail in the vignette on [Model
 Development](model_development.html).
 
+### Meter Data Frames
+
 The `energyintensity` package provides a `meter_df` class, which extends the
 base `data.frame` class with simple data validation, error checking, and
-visualization methods. All of the modeling functions will also take a normal
-`data.frame`, as long as it follows the same basic structure.
+visualization methods. A `meter_df` object is essentially a `data.frame` with
+one or more special fields added. These special fields fall into two categories:
 
-### `meter_df` class
+1. time index  
+2. measured values  
+
+A `meter_df` should have exactly one time index. It may consist of either point
+timestamps (see `?POSIXt`), or time intervals with both a beginning and end
+point (see `??lubridate::interval`).
+
+The `meter_df` can have any number of measured values, although in practice
+there should probably be at least one. The main requirent of the measured value
+fields is that they must have units explicity set (see `?units::units` and [unit
+configuration](model_development.html#unit-configuration)).
+
+Finally, any number of other ordinary fields can be included.
 
 ```{r}
-# sample meter data
-data(pst1_water)
-
 library("lubridate")
+
+# create 
+x <- meter_df(time = seq.Date(as.Date("2013-1-1"),
+                              by = "+1 month",
+                              length.out = 12),
+              value = set_units(rnorm(12), kW))
+
+# print
+x
+
 ```
 
 
 
-### `ei_df` class
-
-- ei_data
-  - df with several specific fields
+```{r}
+# plot
 
 
+```
 
+
+
+also, attributes (see resampling)
+
+
+_Why extend `data.frame`, rather than a time series object?_
+
+The decision to base development around the `data.frame` was because of its
+flexibility, and due to the wide range of tools available for working with and
+manipulating them. I particular, time interval data, such as water or energy
+usage measured over a billing interval (e.g., 1.3 kWh used from Jan 12 - Feb 7)
+is often encountered in the development of energy intensity models. The common
+time series classes in R, such as `ts`, `zoo`, and `xts` do not support time
+interval data well. Future work may consider supporting other classes such as
+these.
+
+Currently, all of the modeling functions in `energyintensity` will also take
+normal `data.frame` objects, as long as they follows the same basic structure.
 
 ### Using `ggplot2`
 
