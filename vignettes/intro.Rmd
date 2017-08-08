@@ -75,6 +75,7 @@ Finally, any number of other ordinary fields can be included.
 
 ```{r}
 library("lubridate")
+library("units")
 
 # create 
 x <- meter_df(time = seq.Date(as.Date("2013-1-1"),

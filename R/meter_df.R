@@ -49,7 +49,7 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
   if (!is_interval & !any(is_rate)) stop("time is point, but measurement is 'volume'", call. = FALSE)
 
   df <- data.frame(..., stringsAsFactors = stringsAsFactors)
-  if (inherits(x, 'tbl_df')) df <- as_tibble(df)
+  if (inherits(x, 'tbl_df')) df <- tibble::as_tibble(df)
 
   # meter_df
   structure(df,
@@ -63,6 +63,7 @@ print.meter_df <- function(x, ...) {
   NextMethod()
 }
 
+#' @importFrom graphics lines plot
 #' @export
 plot.meter_df <- function(x, y, ..., type = 'l') {
 
@@ -80,11 +81,11 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
 
     # first measure field
     if (inherits(t_vals, "Interval")) {
-      plot(int_start(t_vals), meas_vals[[1]], type = 'n', ...)
+      plot(lubridate::int_start(t_vals), meas_vals[[1]], type = 'n', ...)
       for (i in seq_along(t_vals)) {
         lines(rbind.data.frame(
-          c(int_start(t_vals[i]), meas_vals[[1]][i]),
-          c(int_end(t_vals[i]), meas_vals[[1]][i])
+          c(lubridate::int_start(t_vals[i]), meas_vals[[1]][i]),
+          c(lubridate::int_end(t_vals[i]), meas_vals[[1]][i])
         ))
       }
     } else {
@@ -95,7 +96,8 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
     for (i in seq_along(meas_vals)[-1]) {
       if (inherits(t_vals, "Interval")) {
         for (j in seq_along(t_vals)) {
-          lines(data.frame(x = c(int_start(t_vals[j]), int_end(t_vals[j])),
+          lines(data.frame(x = c(lubridate::int_start(t_vals[j]),
+                                 lubridate::int_end(t_vals[j])),
                            y = rep(meas_vals[[i]][j], 2)))
         }
       } else {
