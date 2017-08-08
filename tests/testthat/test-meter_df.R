@@ -15,6 +15,9 @@ int_values <- units::set_units(rnorm(12), kW*h)
 dates <- seq.Date(as.Date("2013-1-1"), by = "+1 month", length.out = 12)
 pt_values <- units::set_units(rnorm(12), kW)
 
+
+# tests -------------------------------------------------------------------
+
 # meter_df from multiple vectors
 test_that("point vectors are bound together", {
   mdf <- meter_df(date = dates,
@@ -37,7 +40,9 @@ test_that("create meter_df from list", {
   mdf_int <- meter_df(data.frame(date = int,
                                  energy = int_values))
   expect_is(mdf_pt, "meter_df")
+  expect_is(mdf_pt, "data.frame")
   expect_is(mdf_int, "meter_df")
+  expect_is(mdf_int, "data.frame")
 })
 
 # meter_df from tbl_df
@@ -47,7 +52,9 @@ test_that("create meter_df from list", {
   mdf_int <- meter_df(tibble(date = int,
                              energy = int_values))
   expect_is(mdf_pt, "meter_df")
+  expect_is(mdf_pt, "tbl_df")
   expect_is(mdf_int, "meter_df")
+  expect_is(mdf_int, "tbl_df")
 })
 
 # exactly one time field

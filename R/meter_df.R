@@ -49,6 +49,7 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
   if (!is_interval & !any(is_rate)) stop("time is point, but measurement is 'volume'", call. = FALSE)
 
   df <- data.frame(..., stringsAsFactors = stringsAsFactors)
+  if (inherits(x, 'tbl_df')) df <- as_tibble(df)
 
   # meter_df
   structure(df,
