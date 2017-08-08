@@ -62,3 +62,47 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
 print.meter_df <- function(x, ...) {
   NextMethod()
 }
+
+#' @export
+plot.meter_df <- function(x, y, ..., type = 'l') {
+
+  stopifnot(missing(y))
+
+  t_col <- which(sapply(x, function(y) inherits(y, c("Date", "POSIXt", "Interval"))))
+  t_vals <- x[[t_col]]
+
+  meas_cols <- which(sapply(x, function(y) inherits(y, "units")))
+  meas_vals <- x[meas_cols]
+
+  if (length(meas_vals) == 0) {
+    plot(t_vals, type = type, ...)
+  } else {
+
+    # first measure field
+    if (inherits(t_vals, "Interval")) {
+      plot(int_start(t_vals), meas_vals[[1]], type = 'n', ...)
+      for (i in seq_along(t_vals)) {
+        lines(rbind.data.frame(
+          c(int_start(t_vals[i]), meas_vals[[1]][i]),
+          c(int_end(t_vals[i]), meas_vals[[1]][i])
+        ))
+      }
+    } else {
+      plot(t_vals, meas_vals[[1]], type = type, ...)
+    }
+
+    # additional measure fields
+    for (i in seq_along(meas_vals)[-1]) {
+      if (inherits(t_vals, "Interval")) {
+        for (j in seq_along(t_vals)) {
+          lines(data.frame(x = c(int_start(t_vals[j]), int_end(t_vals[j])),
+                           y = rep(meas_vals[[i]][j], 2)))
+        }
+      } else {
+        lines(t_vals, meas_vals[[i]], type = type)
+      }
+    }
+  }
+
+  invisible(NULL)
+}

@@ -84,15 +84,11 @@ x <- meter_df(time = seq.Date(as.Date("2013-1-1"),
 
 # print
 x
-
 ```
-
-
 
 ```{r}
 # plot
-
-
+plot(x)
 ```
 
 
