@@ -37,8 +37,12 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
   # TODO: convert with warning
   is_rate <- sapply(x[has_units], function(y) {
     denom <- units(y)$denominator
-    dt <- try(units::as.dt(denom), silent = TRUE)
-    denom_is_dur <- !inherits(dt, "try-error")
+    denom_is_dur <- units(y)$denominator %in% c("s", "second",
+                                                "m", "minute",
+                                                "h", "hour",
+                                                "d", "day",
+                                                "m", "month",
+                                                "y", "year")
     watts <- try(units::set_units(y, "W"), silent = TRUE)
     is_watts <- !inherits(watts, "try-error")
     denom_is_dur | is_watts
