@@ -127,6 +127,16 @@ test_that("known units are accepted", {
   expect_error(f_good_unit(), NA)
 })
 
+# ordinary fields are passed through
+test_that("ordinary fields are passed through", {
+  mdf_pt <- meter_df(data.frame(date = dates,
+                                energy = pt_values,
+                                other = 1:12))
+
+  expect_true("other" %in% colnames(mdf_pt))
+  expect_identical(mdf_pt$other, 1:12)
+})
+
 # time interval with rate measurment
 test_that("time interval with rate measurment", {
   f_int_rate <- function() {
