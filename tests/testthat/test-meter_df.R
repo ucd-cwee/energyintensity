@@ -111,6 +111,22 @@ test_that("multiple measurement fields", {
   expect_equal(length(f_mmeas_oth()), 4)
 })
 
+# known units are accepted
+test_that("known units are accepted", {
+  f_bad_unit <- function() {
+    meter_df(date = int,
+             energy = set_units(rnorm(12), 'g')) # g: gram
+  }
+
+  f_good_unit <- function() {
+    meter_df(date = dates,
+             energy = set_units(rnorm(12), 'kW'))
+  }
+
+  expect_error(f_bad_unit(), "invalid units: g")
+  expect_error(f_good_unit(), NA)
+})
+
 # time interval with rate measurment
 test_that("time interval with rate measurment", {
   f_int_rate <- function() {
