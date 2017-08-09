@@ -13,3 +13,10 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'covr::codecov()'
+
+notifications:
+  email: false
+  slack:
+    secure: qXZEDsBfjQ5dbnmCiY1lbyL8SiRy94WVt9GNdzf6NB8i0c9cmBtkdqxlyyEfvgrTIAz9dMPXNRrza411ij6eTopmb5Da0pFapsfWmTCeuGnR0il6VtTuAec28ZSGq2HWD/a/0wd17FktqDsA8fFU11u4yQukvgnKs/5Lijsld2ZeHIQA+ryx0LTe1CJY/SFB4twR6tMQ/97LLK7ser9zPhsUpFkUbCReDXdektSHT77VATZHllLOnEMXoGK9C5H0+oLqGM2WDxkrSTfgfkjL2p1+KbvMGpkhdVgfkZApPylyRptWoYgD9q+hPNng2ZX6SI8GriYFYXm1pqrCbhiTVFjajwmWkIowmS1XKonmF2AT64XNPaPG828xbYxGgwf3818UlgmFl2KrcF9PvGTPA1gBlbWFgCQua3DUvCcfCEArUN5r7g5DI+WNu1qI96BK/K0IZbBqrdUvTqn4Sh/mwf2nOwoAVUu5vLjGJ9oh++EkCR5KIl6VDxT7zEAy+ASzXNBUWovgUr2Eu+4qlL0xRJExgl9cZyjJJd7AXt0AU3JfmwLH05J2X9u8p1DWUqpkYpAvR74JU8y0XMNFhwQI3Fu36+gjy/K1ASryp01L8ZfQz3VtHfp8+HAo/RUBCcakv9oIzAFXeLWXtdFtR4fEU2K8vsL/xvuj+Btsc/G/XbU=
+    on_success: always
+    on_failure: always
