@@ -22,8 +22,11 @@ pt_values <- units::set_units(rnorm(12), kW)
 test_that("point vectors are bound together", {
   mdf <- meter_df(date = dates,
                   energy = pt_values)
+  mdf2 <- meter_df(interval = dates,
+                   water = set_units(rnorm(12), parse_unit("Mgallon day-1")))
 
   expect_is(mdf, "meter_df")
+  expect_is(mdf2, "meter_df")
 })
 
 test_that("interval vectors are bound together", {
