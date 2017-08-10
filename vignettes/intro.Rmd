@@ -92,10 +92,10 @@ x
 plot(x)
 ```
 
-
-
-also, attributes (see resampling)
-
+When multiple meter data frames are merged together (see [Meter Data
+Reconciliation](model_development.html#Meter-Data-Reconciliation)), additional
+attributes are attached, containing information that is useful for diagnostics
+and quality control.
 
 _Why extend `data.frame`, rather than a time series object?_
 

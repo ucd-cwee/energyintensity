@@ -11,6 +11,15 @@ editor_options:
   chunk_output_type: console
 ---
 
+### Asset Meter Data
+
+- support point and interval measurements (and conversion)
+- time series vis & diagnostics
+- app to support review and validation
+
+
+### Meter Data Reconciliation
+
 Calculating energy intensity requires all of the water and energy meter data
 associated with an asset to be combined and reconciled.
 
@@ -20,14 +29,32 @@ which implement commonly used methods. These methods are used to standardize the
 different time series, so that they can be merged and aggregated. The available
 methods fall into two general categories: (1) aggregation, and (2) resampling.
 
+```{r}
+library(units)
+library(energyintensity)
 
-### Asset Meter Data
+ps1_energy <- meter_df(time = seq.Date(as.Date("2013-1-1"),
+                                       by = "+1 month",
+                                       length.out = 12),
+                       electricity = set_units(rnorm(12), kW))
 
-- support point and interval measurements (and conversion)
-- time series vis & diagnostics
-- app to support review and validation
+ps1_water <- meter_df(time = seq.Date(as.Date("2013-1-1"),
+                                      by = "+1 month",
+                                      length.out = 12),
+                      water = set_units(rnorm(12), parse_unit("Mgallon day-1")))
 
+ps1_all <- reconcile(ps1_energy, ps1_water)
+```
 
+Once you have a reconciled meter data frame, it is trivial to calculate energy
+intensity.
+
+```{r}
+ps1_all$ei <- ps1_all$electricity / ps1_all$water
+
+# convert units
+ps1_all$ei_kwh_mg <- set_units(ps1_all$ei, parse_unit("kW hour Mgallon-1"))
+```
 
 ### Network Connectivity Model
 
