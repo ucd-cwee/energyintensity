@@ -23,7 +23,7 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
   if (sum(has_time) != 1) stop("exactly one field should a have time/date stamp, or time/date-inteval values", call. = FALSE)
 
   # validate units
-  has_units <- sapply(x, function(y) inherits(y, "units"))
+  has_units <- col_has_units(x)
   if (!any(has_units)) stop("at least one field should have measured values with units set", call. = FALSE)
 
   # for now, constrain to known subset of units
@@ -74,11 +74,9 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
 
   stopifnot(missing(y))
 
-  t_col <- which(sapply(x, function(y) inherits(y, c("Date", "POSIXt", "Interval"))))
-  t_vals <- x[[t_col]]
-
-  meas_cols <- which(sapply(x, function(y) inherits(y, "units")))
-  meas_vals <- x[meas_cols]
+  # values
+  t_vals <- x[[attr(x, "time_field")]]
+  meas_vals <- x[attr(x, "meas_fields")]
 
   if (length(meas_vals) == 0) {
     plot(t_vals, type = type, ...)
