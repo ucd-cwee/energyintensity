@@ -113,3 +113,28 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
 
   invisible(NULL)
 }
+
+#' @export
+"[.meter_df" = function(x, i, j, ..., drop = FALSE) {
+	NextMethod()
+}
+
+#' @export
+"[[.meter_df" = function(x, i, j, ...) {
+	NextMethod()
+}
+
+#' @export
+"$.meter_df" = function(x, name) {
+	NextMethod()
+}
+
+#' @export
+"$<-.meter_df" = function(x, name, value) {
+  NextMethod()
+}
+
+#' @export
+"[[<-.meter_df" = function(x, i, j, ..., value) {
+	NextMethod()
+}
