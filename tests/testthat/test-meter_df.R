@@ -1,4 +1,4 @@
-library(energyintensity)
+
 library(units)
 library(tibble)
 context("meter df creation")
@@ -158,4 +158,33 @@ test_that("point timestamp with 'volume' measurment", {
   }
 
   expect_error(f_pt_vol(), "time is point, but measurement is 'volume'")
+})
+
+# index ops
+test_that("index operators work as expected", {
+  mdf <- meter_df(date = dates,
+                  energy = pt_values)
+
+  expect_identical(mdf[1, ], meter_df(date = dates[1], energy = pt_values[1]))
+  expect_identical(attr(mdf[1, ], "time_field"), "date")
+  expect_identical(attr(mdf[1, ], "meas_fields"), "energy")
+  expect_identical(nrow(mdf[2:5, ]), 4L)
+
+  expect_identical(mdf[, "date"], dates)
+  expect_identical(mdf$date, dates)
+  expect_identical(mdf[['date']], dates)
+})
+
+# assignment ops
+test_that("assignment operators work as expected", {
+  mdf <- meter_df(date = dates,
+                  energy = pt_values)
+
+  mdf[['date2']] <- rev(dates)
+  mdf$date3 <- dates
+
+  expect_identical(mdf$date2, rev(dates))
+  expect_identical(dim(mdf), c(12L, 4L))
+  expect_identical(attr(mdf, "time_field"), "date")
+  expect_identical(mdf$date3, dates)
 })

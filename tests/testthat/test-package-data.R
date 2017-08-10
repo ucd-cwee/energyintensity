@@ -1,4 +1,4 @@
-library(energyintensity)
+
 context("package sample data")
 
 # included sample data
