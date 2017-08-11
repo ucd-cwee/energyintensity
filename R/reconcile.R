@@ -26,13 +26,38 @@ reconcile <- function(...) {
   mdf_water <- mdf_water[!vapply(mdf_water, is.null, TRUE)]
 
   # combine and reconcile data with common units
-  # TODO
+  # TODO: check units\
+  # TODO: handle offset point timestamps
+  # TODO: handle mixed point timestamps and intervals
+
+  mdf_elec_rec <- if (all(sapply(mdf_elec, time_ind_type) == "timestamp")) {
+    Reduce(merge_all, mdf_elec)
+  } else if (all(sapply(mdf_elec, time_ind_type) == "interval")) {
+    reconcile_intervals(mdf_elec)
+  } else {
+    stop("combination of point timestamp and time interval is not currently supported", call. = FALSE)
+  }
+
+  mdf_water_rec <- if (all(sapply(mdf_water, time_ind_type) == "timestamp")) {
+    Reduce(merge_all, mdf_water)
+  } else if (all(sapply(mdf_water, time_ind_type) == "interval")) {
+    reconcile_intervals(mdf_water)
+  } else {
+    stop("combination of point timestamp and time interval is not currently supported", call. = FALSE)
+  }
 
   # combine and reconcile data with different units
   # TODO
+  mdf_all <- list(mdf_elec_rec, mdf_water_rec)
+  mdf_all_rec <- if (all(sapply(mdf_all, time_ind_type) == "timestamp")) {
+    Reduce(merge_all, mdf_all)
+  } else if (all(sapply(mdf_all, time_ind_type) == "interval")) {
+    reconcile_intervals(mdf_all)
+  } else {
+    stop("combination of point timestamp and time interval is not currently supported", call. = FALSE)
+  }
 
-  # FIXME: simplest case is to just merge on common timestamps
-  merge(mdf_elec[[1]], mdf_water[[1]], by = "time")
+  mdf_all_rec
 }
 
 get_electricity <- function(mdf) {
@@ -67,7 +92,9 @@ get_water <- function(mdf) {
   mdf_water
 }
 
-# reconcile_same
+reconcile_intervals <- function(x) {
+  time_indices <- lapply(x, get_time_ind)
+  stop("reconciling time intervals not implemented yet", call. = FALSE)
+  NULL
+}
 
-
-# reconcile_different
