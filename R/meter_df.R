@@ -146,7 +146,7 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
 }
 
 #' @export
-"merge.meter_df" = function(x, i, j, ..., value) {
+"merge.meter_df" = function(x, y, ...) {
 	y <- NextMethod()
   meter_df(y)
 }
