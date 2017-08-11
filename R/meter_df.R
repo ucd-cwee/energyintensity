@@ -114,7 +114,15 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
 
 #' @export
 "[.meter_df" = function(x, i, j, ..., drop = FALSE) {
-	NextMethod()
+  y <- NextMethod()
+
+  if (!is.null(ncol(y))) {
+    if (ncol(y) > 1)
+      meter_df(y)
+    else
+      y
+  } else
+    y
 }
 
 #' @export
@@ -136,3 +144,10 @@ plot.meter_df <- function(x, y, ..., type = 'l') {
 "[[<-.meter_df" = function(x, i, j, ..., value) {
 	NextMethod()
 }
+
+#' @export
+"merge.meter_df" = function(x, i, j, ..., value) {
+	y <- NextMethod()
+  meter_df(y)
+}
+
