@@ -9,7 +9,6 @@ reference:
     desc:  Classes for meter and network data.
     contents:
     - meter_df
-    - ei_df
   - title: Functions
     contents:
-    - as.ei_df
+    - reconcile

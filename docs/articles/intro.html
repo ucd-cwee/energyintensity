@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Energy Intensity • energyintensity</title>
+<title>Energy Intensity Data • energyintensity</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -45,7 +45,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/intro.html">Energy Intensity</a>
+      <a href="../articles/intro.html">Energy Intensity Data</a>
+    </li>
+    <li>
+      <a href="../articles/model_development.html">Model Development</a>
+    </li>
+    <li>
+      <a href="../articles/model_outputs.html">Model Outputs</a>
     </li>
   </ul>
 </li>
@@ -65,128 +71,129 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Energy Intensity</h1>
+      <h1>Energy Intensity Data</h1>
+            <h3 class="subtitle">Introduction</h3>
                         <h4 class="author">Andrew Holguin</h4>
             
-            <h4 class="date">2017-08-03</h4>
+            <h4 class="date">2017-08-23</h4>
           </div>
 
     
     
 <div class="contents">
-<p>The <code>energyintensity</code> R package provides classes and functions to support the development of network-based energy intensity models using utility meter and infrastructure data. It is currently available only on Github:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(energyintensity)) remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"ucd-cwee/energyintensity"</span>)</code></pre></div>
+<p>The <code>energyintensity</code> R package provides classes and functions to support the development of network-based energy intensity models using utility meter and infrastructure data. It is currently only available on Github:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"ucd-cwee/energyintensity"</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"energyintensity"</span>)</code></pre></div>
-<p>The basic data required to build a spatially disaggregeted energy intensity model can be divided into two categories:</p>
+<p>The basic data required to build a spatially disaggregeted energy intensity model can be divided into two main categories:</p>
 <ol style="list-style-type: decimal">
-<li>asset water and energy meter readings<br>
+<li>asset-level data (typically readings from water and energy meters)<br>
 </li>
 <li>network connectivity model</li>
 </ol>
-<p>With these two data sets, it is possible to model the cumulative energy required to serve different locations within the water utility distribution network.</p>
-<p>Other types of data can also be integrated, both to improve the robustness of the model and to enable additional analytical features. These include spatial pressure zones, customer consumption data, and modeled flow values (from a hydraulic model).</p>
-<div id="asset-meter-data" class="section level3">
+<p>With data of these two types, it is possible to model the cumulative energy required to serve different locations within the water utility distribution network.</p>
+<p>Other types of data can also be integrated, both to improve the robustness of the model and to enable additional analytical features. These include spatial pressure zones, customer consumption data, and modeled flow values (e.g., from a hydraulic model).</p>
+<div id="asset-meter-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#asset-meter-data" class="anchor"></a>Asset Meter Data</h2>
+<p>Asset water meter data is typically obtained either from a utility SCADA system, which measures flow rates at regular intervals, or from aggregated records provided by the water utility. Energy meter data is similarly obtained from the water utility SCADA system, or as is often the case, from energy utility billing records. The data for each meter is structured as a time series, however the measurment resolution (e.g., regular 15-minute interval vs. irregular billing cycles) and type (e.g., rate vs. volume) may vary between the series. These issues and others, are discussed in greater detail in the vignette on <a href="model_development.html">Model Development</a>.</p>
+<div id="meter-data-frames" class="section level3">
 <h3 class="hasAnchor">
-<a href="#asset-meter-data" class="anchor"></a>Asset Meter Data</h3>
-<p>Asset water meter data is typically obtained either from a utility SCADA system, which measures flow rates at regular intervals, or from aggregated records provided by the water utility. Energy meter data is similarly obtained from the water utiilty SCADA system, or as is often the case, from energy utility billing records. The data for each meter is structured as a time series, however the measurment resolution (e.g., regular 15-minute interval vs. irregular billing cycles) and type (e.g., rate vs. volume) may vary between the series. Calculating energy intensity requires all of the water and energy meter data associated with an asset to be combined and reconciled.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sample meter data</span>
-<span class="kw">data</span>(pst1_water)
-
-<span class="co"># plot</span>
-<span class="kw">library</span>(<span class="st">"lubridate"</span>)</code></pre></div>
+<a href="#meter-data-frames" class="anchor"></a>Meter Data Frames</h3>
+<p>The <code>energyintensity</code> package provides a <code>meter_df</code> class, which extends the base <code>data.frame</code> class with simple data validation, error checking, and visualization methods. A <code>meter_df</code> object is essentially a <code>data.frame</code> with one or more special fields added. These special fields fall into two categories:</p>
+<ol style="list-style-type: decimal">
+<li>time index<br>
+</li>
+<li>measured values</li>
+</ol>
+<p>A <code>meter_df</code> should have exactly one time index. It may consist of either point timestamps (see <code>?POSIXt</code>), or time intervals with both a beginning and end point (see <code>??lubridate::interval</code>).</p>
+<p>The <code>meter_df</code> can have any number of measured values, although in practice there should probably be at least one. The main requirent of the measured value fields is that they must have units explicity set (see <code><a href="http://www.rdocumentation.org/packages/units/topics/units">?units::units</a></code> and <a href="model_development.html#unit-configuration">unit configuration</a>).</p>
+<p>Finally, any number of other ordinary fields can be included.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"lubridate"</span>)</code></pre></div>
 <pre><code>## 
 ## Attaching package: 'lubridate'</code></pre>
 <pre><code>## The following object is masked from 'package:base':
 ## 
 ##     date</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggforce"</span>)</code></pre></div>
-<pre><code>## Warning: package 'ggforce' was built under R version 3.4.1</code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggstance"</span>)</code></pre></div>
-<pre><code>## Warning: package 'ggstance' was built under R version 3.4.1</code></pre>
-<pre><code>## 
-## Attaching package: 'ggstance'</code></pre>
-<pre><code>## The following objects are masked from 'package:ggplot2':
-## 
-##     geom_errorbarh, GeomErrorbarh</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(pst1_water, <span class="kw">aes</span>(<span class="dt">xmin =</span> <span class="kw">int_start</span>(interval),
-                       <span class="dt">xmax =</span> <span class="kw">int_end</span>(interval),
-                       <span class="dt">y =</span> water)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggstance/topics/geom_linerangeh">geom_linerangeh</a></span>()</code></pre></div>
-<p><img src="intro_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
-<p>Cleaning and pre-processing of the data can be handled entirely by the analyst, however, there are a few approaches built in to the <code>energyintensity</code> package, which implement commonly used methods. These methods are used to standardize the different time series, so that they can be merged and aggregated. The available methods fall into two general categories: (1) aggregation, and (2) resampling.</p>
-<ul>
-<li>ei_data</li>
-<li><p>df with several specific fields</p></li>
-<li>support point and interval measurements (and conversion)</li>
-<li>time series vis &amp; diagnostics</li>
-<li><p>app to support review and validation</p></li>
-</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"units"</span>)
+
+<span class="co"># create </span>
+x &lt;-<span class="st"> </span><span class="kw"><a href="../reference/meter_df.html">meter_df</a></span>(<span class="dt">time =</span> <span class="kw">seq.Date</span>(<span class="kw">as.Date</span>(<span class="st">"2013-1-1"</span>),
+                              <span class="dt">by =</span> <span class="st">"+1 month"</span>,
+                              <span class="dt">length.out =</span> <span class="dv">12</span>),
+              <span class="dt">value =</span> <span class="kw">set_units</span>(<span class="kw">rnorm</span>(<span class="dv">12</span>), kW))
+
+<span class="co"># print</span>
+x</code></pre></div>
+<pre><code>##          time          value
+## 1  2013-01-01  0.66270675 kW
+## 2  2013-02-01  1.01305580 kW
+## 3  2013-03-01 -0.10090109 kW
+## 4  2013-04-01 -0.44980662 kW
+## 5  2013-05-01 -0.46384759 kW
+## 6  2013-06-01 -1.06903421 kW
+## 7  2013-07-01 -0.82661019 kW
+## 8  2013-08-01 -0.74017651 kW
+## 9  2013-09-01  0.02669499 kW
+## 10 2013-10-01  0.95292502 kW
+## 11 2013-11-01 -1.80935934 kW
+## 12 2013-12-01 -0.63001425 kW</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot</span>
+<span class="kw">plot</span>(x)</code></pre></div>
+<p><img src="intro_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<p>When multiple meter data frames are merged together (see <a href="model_development.html#Meter-Data-Reconciliation">Meter Data Reconciliation</a>), additional attributes are attached, containing information that is useful for diagnostics and quality control.</p>
+<p><em>Why extend <code>data.frame</code>, rather than a time series object?</em></p>
+<p>The decision to base development around the <code>data.frame</code> was because of its flexibility, and due to the wide range of tools available for working with and manipulating them. I particular, time interval data, such as water or energy usage measured over a billing interval (e.g., 1.3 kWh used from Jan 12 - Feb 7) is often encountered in the development of energy intensity models. The common time series classes in R, such as <code>ts</code>, <code>zoo</code>, and <code>xts</code> do not support time interval data well. Future work may consider supporting other classes such as these.</p>
+<p>Currently, all of the modeling functions in <code>energyintensity</code> will also take normal <code>data.frame</code> objects, as long as they follows the same basic structure.</p>
 </div>
-<div id="network-connectivity-model" class="section level3">
+<div id="using-ggplot2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#network-connectivity-model" class="anchor"></a>Network Connectivity Model</h3>
+<a href="#using-ggplot2" class="anchor"></a>Using <code>ggplot2</code>
+</h3>
+<p>If you prefer, <code>ggplot2</code> can be used for plotting, however it does not currently support <code>units</code>. You can either convert the values to numeric, or load the <code>ggforce</code> package, which will enable support for <code>units</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"ggforce"</span>)   <span class="co"># support for 'units'</span>
+<span class="kw">library</span>(<span class="st">"ggstance"</span>)  <span class="co"># geom_linerangeh (horizontal line intervals)</span>
+
+<span class="kw">ggplot</span>(pst1_water, <span class="kw">aes</span>(<span class="dt">xmin =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/interval">int_start</a></span>(interval),
+                       <span class="dt">xmax =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/lubridate/topics/interval">int_end</a></span>(interval),
+                       <span class="dt">y =</span> water)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_linerangeh</span>()</code></pre></div>
+<p><img src="intro_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+</div>
+</div>
+<div id="network-connectivity-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#network-connectivity-model" class="anchor"></a>Network Connectivity Model</h2>
 <ul>
 <li>ei_net</li>
-<li><p>igraph with ei_data attached at nodes (and edges)</p></li>
+<li>igraph with ei_data attached at nodes (and edges)</li>
 <li>convert between spatial and igraph-based network</li>
-<li><p>display (and edit?) connectivity</p></li>
 </ul>
 </div>
-<div id="data-integration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-integration" class="anchor"></a>Data Integration</h3>
+<div id="data-integration" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-integration" class="anchor"></a>Data Integration</h2>
 <ul>
 <li>associate meter data with specific nodes or edges in the graph</li>
 </ul>
 </div>
-<div id="network-time-slices" class="section level3">
-<h3 class="hasAnchor">
-<a href="#network-time-slices" class="anchor"></a>Network Time Slices</h3>
-<ul>
-<li>snapshot of model during a point or interval of time</li>
-<li>cumulative flow and related diagnostics</li>
-</ul>
-</div>
-<div id="model-execution" class="section level3">
-<h3 class="hasAnchor">
-<a href="#model-execution" class="anchor"></a>Model Execution</h3>
-<ul>
-<li>calc ei &amp; flow</li>
-</ul>
-</div>
-<div id="spatial-visualization" class="section level3">
-<h3 class="hasAnchor">
-<a href="#spatial-visualization" class="anchor"></a>Spatial Visualization</h3>
-<ul>
-<li>plot as map</li>
-<li>pressure zone data –&gt; visualize ei throughout service territory</li>
-</ul>
-</div>
-<div id="customer-data-conservation-estimates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#customer-data-conservation-estimates" class="anchor"></a>Customer Data &amp; Conservation Estimates</h3>
-</div>
-<div id="data-fusion-model-tuning" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-fusion-model-tuning" class="anchor"></a>Data Fusion &amp; Model Tuning</h3>
-</div>
-<div id="future-development-plans" class="section level3">
-<h3 class="hasAnchor">
-<a href="#future-development-plans" class="anchor"></a>Future Development Plans</h3>
-<p>Split non-core components into other packages: - random data generation for simulation and testing - model development vis app - additional extensions?</p>
-<ul>
-<li>network skeletonization</li>
-<li>integration with external hydraulic models</li>
-<li>better representation of time lags and storage</li>
-<li>additional and improved analytical tools</li>
-<li>more tests, documentation, etc.</li>
-</ul>
+<div id="customer-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#customer-data" class="anchor"></a>Customer Data</h2>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#asset-meter-data">Asset Meter Data</a></li>
+      <li><a href="#network-connectivity-model">Network Connectivity Model</a></li>
+      <li><a href="#data-integration">Data Integration</a></li>
+      <li><a href="#customer-data">Customer Data</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

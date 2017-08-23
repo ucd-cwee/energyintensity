@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create <code>meter_df</code> object — meter_df â€¢ energyintensity</title>
+<title>Merge and Reconcile Meter Data — reconcile â€¢ energyintensity</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -96,25 +96,23 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create <code>meter_df</code> object</h1>
+    <h1>Merge and Reconcile Meter Data</h1>
     </div>
 
     
-    <p>Create <code>meter_df</code>, which is essentially a data.frame with standardized meter data series</p>
+    <p>Merge multiple <code>meter_df</code> objects together so that the values can be
+compared. This often requires aggregation or resampling of the original
+values.</p>
     
 
-    <pre class="usage"><span class='fu'>meter_df</span>(<span class='no'>...</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fu'>default.stringsAsFactors</span>())</pre>
+    <pre class="usage"><span class='fu'>reconcile</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>column elements to be binded into an <code>meter_df</code> object or a <code>data.frame</code> with required columns. One element must be a time index and at least one should have measured values with units set, see <code>set_units</code></p></td>
-    </tr>
-    <tr>
-      <th>stringsAsFactors</th>
-      <td><p>logical; logical: should character vectors be converted to factors?  The `factory-fresh' default is <code>TRUE</code>, but this can be changed by setting <code>options(stringsAsFactors = FALSE)</code>.</p></td>
+      <td><p><code>meter_df</code> objects, which will be merged and reconciled</p></td>
     </tr>
     </table>
     
@@ -125,19 +123,19 @@
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>seq.Date</span>(<span class='fu'>as.Date</span>(<span class='st'>"2013-1-1"</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"+1 month"</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>12</span>),
                 <span class='kw'>value</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/units/topics/units'>set_units</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>12</span>), <span class='no'>kW</span>))
 
-<span class='fu'>meter_df</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;          time           value
-#&gt; 1  2013-01-01 -1.400043517 kW
-#&gt; 2  2013-02-01  0.255317055 kW
-#&gt; 3  2013-03-01 -2.437263611 kW
-#&gt; 4  2013-04-01 -0.005571287 kW
-#&gt; 5  2013-05-01  0.621552721 kW
-#&gt; 6  2013-06-01  1.148411606 kW
-#&gt; 7  2013-07-01 -1.821817661 kW
-#&gt; 8  2013-08-01 -0.247325302 kW
-#&gt; 9  2013-09-01 -0.244199607 kW
-#&gt; 10 2013-10-01 -0.282705449 kW
-#&gt; 11 2013-11-01 -0.553699384 kW
-#&gt; 12 2013-12-01  0.628982042 kW</div></pre>
+<span class='fu'><a href='meter_df.html'>meter_df</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;          time          value
+#&gt; 1  2013-01-01  2.06502490 kW
+#&gt; 2  2013-02-01 -1.63098940 kW
+#&gt; 3  2013-03-01  0.51242695 kW
+#&gt; 4  2013-04-01 -1.86301149 kW
+#&gt; 5  2013-05-01 -0.52201251 kW
+#&gt; 6  2013-06-01 -0.05260191 kW
+#&gt; 7  2013-07-01  0.54299634 kW
+#&gt; 8  2013-08-01 -0.91407483 kW
+#&gt; 9  2013-09-01  0.46815442 kW
+#&gt; 10 2013-10-01  0.36295126 kW
+#&gt; 11 2013-11-01 -1.30454355 kW
+#&gt; 12 2013-12-01  0.73777632 kW</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

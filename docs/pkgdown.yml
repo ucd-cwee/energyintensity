@@ -3,4 +3,6 @@ urls:
   article: https://ucd-cwee.github.io/energyintensity//articles
 articles:
   intro: intro.html
+  model_development: model_development.html
+  model_outputs: model_outputs.html
 
