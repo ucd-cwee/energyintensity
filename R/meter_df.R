@@ -28,7 +28,7 @@ meter_df <- function(..., stringsAsFactors = default.stringsAsFactors()) {
 
   # for now, constrain to known subset of units
   # TODO: review if this restriction can be safely relaxed
-  all_units <- sapply(x[has_units], units::as_cf)
+  all_units <- sapply(x[has_units], units::deparse_unit)
   known_units <- c(getOption("ei.energy_units"), getOption("ei.water_units"))
   unknown_units <- setdiff(all_units, known_units)
   if (length(unknown_units) > 0) stop("invalid units: ", unknown_units, call. = FALSE)

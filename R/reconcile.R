@@ -63,7 +63,7 @@ reconcile <- function(...) {
 get_electricity <- function(mdf) {
 
   is_elec <- vapply(mdf[attr(mdf, 'meas_fields')],
-                    function(x) units::as_cf(x) %in% getOption("ei.energy_units"),
+                    function(x) units::deparse_unit(x) %in% getOption("ei.energy_units"),
                     TRUE)
   is_elec <- is_elec[is_elec]
 
@@ -79,7 +79,7 @@ get_electricity <- function(mdf) {
 get_water <- function(mdf) {
 
   is_water <- vapply(mdf[attr(mdf, 'meas_fields')],
-                    function(x) units::as_cf(x) %in% getOption("ei.water_units"),
+                    function(x) units::deparse_unit(x) %in% getOption("ei.water_units"),
                     TRUE)
   is_water <- is_water[is_water]
 
